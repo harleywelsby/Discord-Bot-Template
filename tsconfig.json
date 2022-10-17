@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "module": "esnext", 
-    "outDir": "./tscompile",
+    "outDir": "build",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "esModuleInterop": true,

@@ -11,7 +11,7 @@ import { createRequire } from 'module';
 
 // Load the config json from ./config
 const require = createRequire(import.meta.url);
-export const config: JSON = require('./config.json');
+export const config: JSON = require('../config/config.json');
 
 // Load commands into Discord.js
 const commands = [];
