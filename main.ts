@@ -8,7 +8,7 @@ import { ActivityType, Client, IntentsBitField } from 'discord.js';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 import { createRequire } from 'module';
-import { doCommand, exampleCommand } from './commands/exampleCommand';
+import { doCommand, exampleCommand } from './commands/exampleCommand.js';
 
 // Load the config json from ./config
 const require = createRequire(import.meta.url);
@@ -54,7 +54,7 @@ bot.on('interactionCreate', interaction => {
     if (!interaction.isCommand()) return;
 
     switch (interaction.commandName) {
-        case 'exampleCommand':
+        case 'ExampleCommand':
             doCommand(interaction);
         default:
             break;
