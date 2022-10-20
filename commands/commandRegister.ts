@@ -6,5 +6,5 @@ export const thingCommand = new SlashCommandBuilder()
     .setDescription('Say hello to the bot!')
 
 export const coolCommand = new SlashCommandBuilder()
-.setName('coolertestcommand')
-.setDescription('Say hello to the bot!')
+    .setName('coolertestcommand')
+    .setDescription('Say hello to the bot!')
