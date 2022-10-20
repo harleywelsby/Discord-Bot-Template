@@ -8,6 +8,12 @@ import { Client, Events, IntentsBitField } from 'discord.js';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 import config from './config/config.json' assert { type: 'json' };
+import { 
+    CommandRegisterLocation, 
+    ErrorFailedToCreateBot, 
+    LoggedInMessage, 
+    RefreshingSlashCommandsMessage 
+} from './constants/const';
 
 export const bot: Client = new Client({ intents: [
     IntentsBitField.Flags.Guilds, 
@@ -18,7 +24,7 @@ export const bot: Client = new Client({ intents: [
 const commands: string[] = [];
 
 // Load commands into Discord.js from ./commands
-import('./commands/commandRegister.js').then((slashCommandBuilders) => {
+import(CommandRegisterLocation).then((slashCommandBuilders) => {
     Object.keys(slashCommandBuilders).forEach((key) => {
         commands.push(slashCommandBuilders[key].toJSON());
     });
@@ -27,7 +33,7 @@ import('./commands/commandRegister.js').then((slashCommandBuilders) => {
     const rest = new REST({ version: '10' }).setToken(config.Token);
     (async () => {
         try {
-            console.log(`Refreshing ${commands.length} Slash Commands`);
+            console.log(RefreshingSlashCommandsMessage);
             
             await rest.put(
                 Routes.applicationCommands(config.ClientId),
@@ -41,10 +47,10 @@ import('./commands/commandRegister.js').then((slashCommandBuilders) => {
 
     // Login
     bot.on(Events.ClientReady, () => {
-        console.log('logged in!');
+        console.log(LoggedInMessage);
 
         if (!bot.user) {
-            console.error('Error - Failed to create bot');
+            console.error(ErrorFailedToCreateBot);
         }
 
         // Custom activity - displays in the members side bar in the server

@@ -1,5 +1,6 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction, Events } from 'discord.js';
+import { UnrecognizedCommandMessage } from '../constants/const.js';
 import { bot } from '../main.js';
 import { doExampleCommand } from './exampleCommand.js';
 
@@ -15,7 +16,7 @@ bot.on(Events.InteractionCreate, interaction => {
             doExampleCommand(command);
             break;
         default:
-            command.reply(`I don't recognize that command ${command.user}`);
+            command.reply(`${UnrecognizedCommandMessage} ${command.user}`);
     }
 });
 
