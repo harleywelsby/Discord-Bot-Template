@@ -18,24 +18,24 @@ export const bot: Client = new Client({ intents: [
 });
 const commands: string[] = [];
 
-const startup = () => {
-    // Load commands into Discord.js from ./commands
-    // See https://discordjs.guide/creating-your-bot/command-deployment.html#guild-commands
-    const pushCommandFilesToArray = new Promise(() => {
-        const commandFiles: string[] = fs.readdirSync('./commands').filter(file => file.endsWith('.js') || file.endsWith('.ts'));
-        for (const file of commandFiles) {
-            let commandFileName: string = file;
-            if (file.endsWith('.ts')) {
-                commandFileName = file.slice(0, -3) + '.js';
-            }
-
-            import(`./commands/${commandFileName}`).then((command: any) => {
-                commands.push(command.exampleCommand.toJSON());
-                console.log('bungling');
-            });
+// Load commands into Discord.js from ./commands
+// See https://discordjs.guide/creating-your-bot/command-deployment.html#guild-commands
+async function pushCommandFilesToArray() {
+    const commandFiles: string[] = fs.readdirSync('./commands').filter(file => file.endsWith('.js') || file.endsWith('.ts'));
+    for (const file of commandFiles) {
+        let commandFileName: string = file;
+        if (file.endsWith('.ts')) {
+            commandFileName = file.slice(0, -3) + '.js';
         }
-    });
-    
+
+        import(`./commands/${commandFileName}`).then((command: any) => {
+            commands.push(command.exampleCommand.toJSON());
+            console.log('bungling');
+        });
+    }
+};
+
+function refreshRestSlashCommands() {
     // Refresh slash commands on startup
     const rest = new REST({ version: '10' }).setToken(config.Token);
     (async () => {
@@ -53,28 +53,34 @@ const startup = () => {
             console.error(error);
         }
     })();
+}
 
-    // Login
-    bot.on(Events.ClientReady, () => {
-        console.log('logged in!');
+async function startup() {
+    await pushCommandFilesToArray().then(() => {
+        refreshRestSlashCommands();
 
-        // Custom activity - displays in the members side bar in the server
-        bot.user!.setActivity('Cool custom message here', { type: ActivityType.Playing });
+        // Login
+        bot.on(Events.ClientReady, () => {
+            console.log('logged in!');
+
+            // Custom activity - displays in the members side bar in the server
+            bot.user!.setActivity('Cool custom message here', { type: ActivityType.Playing });
+        });
+
+        // Check for commands as they happen
+        bot.on(Events.InteractionCreate, interaction => {
+            if (!interaction.isChatInputCommand()) return;
+
+            switch (interaction.commandName) {
+                case 'ExampleCommand':
+                    // doCommand(interaction);
+                default:
+                    break;
+            }
+        });
+
+        bot.login(config.Token);
     });
-
-    // Check for commands as they happen
-    bot.on(Events.InteractionCreate, interaction => {
-        if (!interaction.isChatInputCommand()) return;
-
-        switch (interaction.commandName) {
-            case 'ExampleCommand':
-                // doCommand(interaction);
-            default:
-                break;
-        }
-    });
-
-    bot.login(config.Token);
 }
 
 startup();
