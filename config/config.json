@@ -1,4 +1,6 @@
 {
     "Token": "",
-    "ClientId": ""
+    "ClientId": "",
+    "ActivityMessage": "",
+    "ActivityTypeEnum": "0"
 }
