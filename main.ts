@@ -8,7 +8,6 @@ import { ActivityType, Client, Events, IntentsBitField } from 'discord.js';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 import config from './config/config.json' assert { type: 'json' };
-import fs from 'node:fs';
 
 export const bot: Client = new Client({ intents: [
     IntentsBitField.Flags.Guilds, 
@@ -19,23 +18,11 @@ export const bot: Client = new Client({ intents: [
 const commands: string[] = [];
 
 // Load commands into Discord.js from ./commands
-// See https://discordjs.guide/creating-your-bot/command-deployment.html#guild-commands
-async function pushCommandFilesToArray() {
-    const commandFiles: string[] = fs.readdirSync('./commands').filter(file => file.endsWith('.js') || file.endsWith('.ts'));
-    for (const file of commandFiles) {
-        let commandFileName: string = file;
-        if (file.endsWith('.ts')) {
-            commandFileName = file.slice(0, -3) + '.js';
-        }
+import('./commands/commandRegister.js').then((slashCommandBuilders) => {
+    Object.keys(slashCommandBuilders).forEach((key) => {
+        commands.push(slashCommandBuilders[key].toJSON());
+    });
 
-        import(`./commands/${commandFileName}`).then((command: any) => {
-            commands.push(command.exampleCommand.toJSON());
-            console.log('bungling');
-        });
-    }
-};
-
-function refreshRestSlashCommands() {
     // Refresh slash commands on startup
     const rest = new REST({ version: '10' }).setToken(config.Token);
     (async () => {
@@ -53,34 +40,26 @@ function refreshRestSlashCommands() {
             console.error(error);
         }
     })();
-}
 
-async function startup() {
-    await pushCommandFilesToArray().then(() => {
-        refreshRestSlashCommands();
+    // Login
+    bot.on(Events.ClientReady, () => {
+        console.log('logged in!');
 
-        // Login
-        bot.on(Events.ClientReady, () => {
-            console.log('logged in!');
-
-            // Custom activity - displays in the members side bar in the server
-            bot.user!.setActivity('Cool custom message here', { type: ActivityType.Playing });
-        });
-
-        // Check for commands as they happen
-        bot.on(Events.InteractionCreate, interaction => {
-            if (!interaction.isChatInputCommand()) return;
-
-            switch (interaction.commandName) {
-                case 'ExampleCommand':
-                    // doCommand(interaction);
-                default:
-                    break;
-            }
-        });
-
-        bot.login(config.Token);
+        // Custom activity - displays in the members side bar in the server
+        bot.user!.setActivity('Cool custom message here', { type: ActivityType.Playing });
     });
-}
 
-startup();
+    // Check for commands as they happen
+    bot.on(Events.InteractionCreate, interaction => {
+        if (!interaction.isChatInputCommand()) return;
+
+        switch (interaction.commandName) {
+            case 'ExampleCommand':
+                // doCommand(interaction);
+            default:
+                break;
+        }
+    });
+
+    bot.login(config.Token);
+});
