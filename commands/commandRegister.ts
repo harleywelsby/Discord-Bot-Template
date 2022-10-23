@@ -22,6 +22,6 @@ bot.on(Events.InteractionCreate, interaction => {
 
 // Commands
 
-export const thingCommand = new SlashCommandBuilder()
+export const exampleCommand = new SlashCommandBuilder()
     .setName('examplecommand')
     .setDescription('Say hello to the bot!')
