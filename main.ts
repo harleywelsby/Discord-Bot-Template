@@ -4,7 +4,7 @@
 // || AUTHOR: Harley Welsby, https://github.com/harleywelsby  ||
 // =============================================================
 
-import { Client, Events, IntentsBitField } from 'discord.js';
+import { ActivityType, Client, Events, GatewayIntentBits } from 'discord.js';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 import config from './config/config.json' assert { type: 'json' };
@@ -13,12 +13,12 @@ import {
     ErrorFailedToCreateBot, 
     LoggedInMessage, 
     RefreshingSlashCommandsMessage 
-} from './constants/const';
+} from './constants/const.js';
 
 export const bot: Client = new Client({ intents: [
-    IntentsBitField.Flags.Guilds, 
-    IntentsBitField.Flags.GuildMessages,
-    IntentsBitField.Flags.GuildMembers
+    GatewayIntentBits.Guilds, 
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildMembers
     ], 
 });
 const commands: string[] = [];
@@ -54,7 +54,7 @@ import(CommandRegisterLocation).then((slashCommandBuilders) => {
         }
 
         // Custom activity - displays in the members side bar in the server
-        bot.user.setActivity(config.ActivityMessage, { type: parseInt(config.ActivityTypeEnum) });
+        bot.user.setActivity(config.ActivityMessage, { type: ActivityType.Playing });
     });
 
     bot.login(config.Token);

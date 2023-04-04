@@ -13,7 +13,7 @@
     "discord.js": "^14.6.0"
   },
   "scripts": {
-    "bot": "tsc && node --experimental-json-modules build/main"
+    "start": "tsc && node --experimental-json-modules build/main"
   },
   "devDependencies": {
     "discord-api-types": "^0.37.14",
