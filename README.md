@@ -1,12 +1,19 @@
-# Discord-Bot-TypeScript-Template
-TypeScript template for Discord Bot development with Discord.js
+# Discord Bot TypeScript Template
 
-# How to Use This Template
+A simple TypeScript boilerplate for Discord bots, using <a href="https://discordjs.guide/">Discord.js</a>.
 
-* Fork the repository and rename 'config/config.example.json' to 'config/config.json'. From here you can plug in the Token and ClientId, which are required for starting the bot and creating slash commands. You can get these values by creating a new application here: https://discord.com/developers
+# Set Up a New Bot
 
-* Run 'npm i' in the root directory, and you should be able to start the bot with 'npm run bot'!
+* Fork the repository and rename `config/config.example.json` to `config/config.json`. 
 
-* To add new commands, update 'commands/commandRegister.ts' with your new slash command info, as seen in the example on lines 25-27. For more info on commands like adding arguments, see the Discord.js documentation here: https://discordjs.guide/slash-commands/advanced-creation.html
+* Place your bot token from the <a href="https://discord.com/developers">Discord Developer Portal</a> into `config/config.json`, as well as your bot's Client ID (visible in Discord with Developer Mode switched on).
 
-* Once you've added a new slash command, you'll also need to update the switch case in 'commands/commandRegister.ts' to tell the bot what it should do when your command is called. See the example of this on lines 15-17.
+* Run `npm i`, then start the bot with `npm run start`!
+
+# Add a New Command
+
+* Add the SlashCommandBuilder for your command in `commands/commandRegister.ts`.
+
+* Make a file for your command (see `commands/exampleCommand.ts`) with an exported function to provide command functionality.
+
+* Add a case for the command in the `commands/commandRegister.ts` switch (see lines 15-17). This tells the bot what to do when your command is executed.
