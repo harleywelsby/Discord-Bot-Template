@@ -2,7 +2,7 @@
 
 A simple TypeScript boilerplate for Discord bots, using <a href="https://discordjs.guide/">Discord.js</a>.
 
-# Set Up a New Bot
+## Set Up a New Bot
 
 * Fork the repository and rename `config/config.example.json` to `config/config.json`. 
 
@@ -10,7 +10,7 @@ A simple TypeScript boilerplate for Discord bots, using <a href="https://discord
 
 * Run `npm i`, then start the bot with `npm run start`!
 
-# Add a New Command
+## Add a New Command
 
 * Add the SlashCommandBuilder for your command in `commands/commandRegister.ts`.
 
