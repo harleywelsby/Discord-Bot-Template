@@ -1,10 +1,10 @@
 {
   "name": "discord-bot-template",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "TypeScript template for Discord Bot development with Discord.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/harleywelsby/Discord-Bot-TypeScript-Template.git"
+    "url": "git+https://github.com/harleywelsby/Discord-Bot-Template.git"
   },
   "author": "Harley Welsby",
   "type": "module",
